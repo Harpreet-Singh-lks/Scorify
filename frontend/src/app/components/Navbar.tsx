@@ -3,9 +3,15 @@
 import Link from "next/link"
 import { useState } from "react";
 
-export const Navbar = () => {
-    const [address, setAddress] = useState("");
-    const [isConnected, setIsConnected] = useState(false);
+interface NavbarProps {
+    address: string;
+    setAddress: (address: string) => void;
+    isConnected: boolean;
+    setIsConnected: (connected: boolean) => void;
+}
+
+export const Navbar = ({ address, setAddress, isConnected, setIsConnected }: NavbarProps) => {
+    
     const [connecting, setConnecting] = useState(false);
 
     const handleWalletConnect = async () => {
@@ -35,7 +41,11 @@ export const Navbar = () => {
     };
 
     return (
-        <nav className="bg-gray-900 text-white py-4 shadow-md">
+        <nav className="bg-gray-900 text-white py-4 shadow-md" 
+        style={{
+            backgroundImage: "url('/Images/ProfilePage.svg')",
+            backgroundSize: "cover",
+            backgroundPosition: "center"}}>
             <div className="container mx-auto px-4 flex justify-between items-center">
                 <a href="/" className="text-2xl font-bold text-blue-400 hover:text-blue-300 transition duration-300">
                     Scortify

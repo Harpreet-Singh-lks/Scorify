@@ -1,10 +1,21 @@
-import Dashboard from "./dashboard/dashboard.jsx"
+"use client";
 import {Navbar} from "./components/Navbar"
-
-export default function main(){
-
-
+import { useState } from "react";
+import Dashboard from "./dashboard/dashboard"
+export default function Home(){
+  const [address, setAddress] = useState("");
+    const [isConnected, setIsConnected] = useState(false);
   return (
-    <Navbar/>
+    <div className="min-h-screen bg-gray-950">
+            <Navbar 
+                address={address}
+                setAddress={setAddress}
+                isConnected={isConnected}
+                setIsConnected={setIsConnected}
+            />
+            <div className="container mx-auto px-4 py-8">
+                <Dashboard address={address} isConnected={isConnected} />
+            </div>
+        </div>
   )
 }

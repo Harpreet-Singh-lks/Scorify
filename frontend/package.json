@@ -10,7 +10,10 @@
   },
   "dependencies": {
     "@atgraphite/web3-plugin": "^1.1.1",
+    "@dicebear/collection": "^9.2.2",
+    "@dicebear/core": "^9.2.2",
     "ethers": "^6.14.3",
+    "fetch": "^1.1.0",
     "next": "15.3.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
