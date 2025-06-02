@@ -46,7 +46,7 @@ const CircularMeter = ({ value, maxValue, label, color, unit = "", size = 120 }:
                         stroke="currentColor"
                         strokeWidth="8"
                         fill="transparent"
-                        className="text-gray-300"
+                        className="text-gray-600"
                     />
                     <circle
                         cx={size / 2}
@@ -61,13 +61,13 @@ const CircularMeter = ({ value, maxValue, label, color, unit = "", size = 120 }:
                     />
                 </svg>
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
-                    <div className="text-lg font-bold text-white">
+                    <div className="text-lg font-bold text-white drop-shadow-lg">
                         {value.toFixed(value >= 1000 ? 0 : 2)}
                     </div>
-                    <div className="text-xs text-gray-400">{unit}</div>
+                    <div className="text-xs text-gray-200 drop-shadow-md">{unit}</div>
                 </div>
             </div>
-            <div className="text-sm text-gray-300 text-center mt-2">{label}</div>
+            <div className="text-sm text-gray-200 text-center mt-2 drop-shadow-md">{label}</div>
         </div>
     );
 };
@@ -101,8 +101,10 @@ const TierMeter = ({ tierName, isSelected, maxLoan, interestRate, ltv, onClick }
 
     return (
         <div 
-            className={`flex flex-col items-center p-3 rounded-lg cursor-pointer transition-all duration-300 ${
-                isSelected ? 'bg-blue-600 transform scale-105' : 'bg-gray-700 hover:bg-gray-600'
+            className={`flex flex-col items-center p-3 rounded-lg cursor-pointer transition-all duration-300 backdrop-blur-sm border ${
+                isSelected 
+                ? 'bg-blue-600/80 transform scale-105 border-blue-400/50' 
+                : 'bg-black/30 hover:bg-black/40 border-gray-500/30'
             }`}
             onClick={onClick}
         >
@@ -119,7 +121,7 @@ const TierMeter = ({ tierName, isSelected, maxLoan, interestRate, ltv, onClick }
                         stroke="currentColor"
                         strokeWidth="4"
                         fill="transparent"
-                        className="text-gray-500"
+                        className="text-gray-600"
                     />
                     <circle
                         cx={40}
@@ -134,13 +136,13 @@ const TierMeter = ({ tierName, isSelected, maxLoan, interestRate, ltv, onClick }
                     />
                 </svg>
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
-                    <div className="text-sm font-bold text-white">{tierName}</div>
-                    <div className="text-xs text-gray-300">{ltvPercentage.toFixed(0)}%</div>
+                    <div className="text-sm font-bold text-white drop-shadow-lg">{tierName}</div>
+                    <div className="text-xs text-gray-200 drop-shadow-md">{ltvPercentage.toFixed(0)}%</div>
                 </div>
             </div>
             <div className="text-center mt-2">
-                <div className="text-xs text-white font-medium">${(maxLoan/1000).toFixed(0)}K</div>
-                <div className="text-xs text-gray-300">{interestRate}% APR</div>
+                <div className="text-xs text-white font-medium drop-shadow-md">${(maxLoan/1000).toFixed(0)}K</div>
+                <div className="text-xs text-gray-200 drop-shadow-md">{interestRate}% APR</div>
             </div>
         </div>
     );
@@ -342,14 +344,14 @@ export const LoanSimulator = ({ address, isConnected }: UserProfileProps) => {
     return (
         <div className="text-white">
             <div className="max-w-full">
-                <h1 className="text-4xl font-bold text-center mb-8 text-blue-400">Loan Simulator</h1>
+                <h1 className="text-4xl font-bold text-center mb-8 text-blue-400 drop-shadow-lg">Loan Simulator</h1>
                 
                 {/* Input Section */}
-                <div className="bg-gray-800 rounded-lg p-6 mb-8">
-                    <h2 className="text-2xl font-bold mb-6">Loan Configuration</h2>
+                <div className="bg-black/30 backdrop-blur-sm rounded-lg p-6 mb-8 border border-gray-500/30">
+                    <h2 className="text-2xl font-bold mb-6 drop-shadow-lg">Loan Configuration</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <label className="block text-gray-300 text-sm font-medium mb-2">
+                            <label className="block text-gray-200 text-sm font-medium mb-2 drop-shadow-md">
                                 Loan Amount (USD)
                             </label>
                             <input
@@ -360,21 +362,21 @@ export const LoanSimulator = ({ address, isConnected }: UserProfileProps) => {
                                 min="0"
                                 max={maxBorrowableLimits[tier]}
                                 step="100"
-                                className="w-full bg-gray-700 text-white rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                className="w-full bg-black/40 backdrop-blur-sm text-white rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 border border-gray-500/30"
                             />
-                            <small className="text-gray-400">
+                            <small className="text-gray-300 drop-shadow-md">
                                 Max for {tier} tier: ${maxBorrowableLimits[tier].toLocaleString()}
                             </small>
                         </div>
 
                         <div>
-                            <label className="block text-gray-300 text-sm font-medium mb-2">
+                            <label className="block text-gray-200 text-sm font-medium mb-2 drop-shadow-md">
                                 Collateral Asset
                             </label>
                             <select
                                 value={selectedAsset}
                                 onChange={(e) => setSelectedAsset(e.target.value)}
-                                className="w-full bg-gray-700 text-white rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                className="w-full bg-black/40 backdrop-blur-sm text-white rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 border border-gray-500/30"
                             >
                                 <option value="ETH">Ethereum (ETH)</option>
                                 <option value="WBTC">Wrapped Bitcoin (WBTC)</option>
@@ -388,8 +390,8 @@ export const LoanSimulator = ({ address, isConnected }: UserProfileProps) => {
 
                 {/* Circular Meters for Loan Details */}
                 {loanAmount > 0 && tokenPrices[selectedAsset] && (
-                    <div className="bg-gray-800 rounded-lg p-6 mb-8">
-                        <h3 className="text-2xl font-bold mb-6 text-center">Loan Terms for {tier} Tier</h3>
+                    <div className="bg-black/30 backdrop-blur-sm rounded-lg p-6 mb-8 border border-gray-500/30">
+                        <h3 className="text-2xl font-bold mb-6 text-center drop-shadow-lg">Loan Terms for {tier} Tier</h3>
                         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                             <CircularMeter
                                 value={loanCalculation.collateralRequired}
@@ -427,31 +429,31 @@ export const LoanSimulator = ({ address, isConnected }: UserProfileProps) => {
 
                         {/* Additional Info */}
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6 text-center">
-                            <div className="bg-gray-700 rounded-lg p-4">
-                                <div className="text-xl font-bold text-blue-400">
+                            <div className="bg-black/40 backdrop-blur-sm rounded-lg p-4 border border-gray-600/30">
+                                <div className="text-xl font-bold text-blue-400 drop-shadow-lg">
                                     ${loanCalculation.maxBorrowableAmount.toFixed(0)}
                                 </div>
-                                <div className="text-gray-300 text-sm">Max Borrowable (1 {selectedAsset})</div>
+                                <div className="text-gray-200 text-sm drop-shadow-md">Max Borrowable (1 {selectedAsset})</div>
                             </div>
-                            <div className="bg-gray-700 rounded-lg p-4">
-                                <div className="text-xl font-bold text-red-400">
+                            <div className="bg-black/40 backdrop-blur-sm rounded-lg p-4 border border-gray-600/30">
+                                <div className="text-xl font-bold text-red-400 drop-shadow-lg">
                                     ${loanCalculation.liquidationThreshold.toFixed(0)}
                                 </div>
-                                <div className="text-gray-300 text-sm">Liquidation Threshold</div>
+                                <div className="text-gray-200 text-sm drop-shadow-md">Liquidation Threshold</div>
                             </div>
-                            <div className="bg-gray-700 rounded-lg p-4">
-                                <div className="text-xl font-bold text-green-400">
+                            <div className="bg-black/40 backdrop-blur-sm rounded-lg p-4 border border-gray-600/30">
+                                <div className="text-xl font-bold text-green-400 drop-shadow-lg">
                                     ${tokenPrices[selectedAsset]?.toLocaleString()}
                                 </div>
-                                <div className="text-gray-300 text-sm">Current {selectedAsset} Price</div>
+                                <div className="text-gray-200 text-sm drop-shadow-md">Current {selectedAsset} Price</div>
                             </div>
                         </div>
                     </div>
                 )}
 
                 {/* Tier Selection with Circular Meters */}
-                <div className="bg-gray-800 rounded-lg p-6 mb-8">
-                    <h3 className="text-2xl font-bold mb-6 text-center">Select Tier to Compare</h3>
+                <div className="bg-black/30 backdrop-blur-sm rounded-lg p-6 mb-8 border border-gray-500/30">
+                    <h3 className="text-2xl font-bold mb-6 text-center drop-shadow-lg">Select Tier to Compare</h3>
                     <div className="grid grid-cols-3 md:grid-cols-5 gap-3">
                         {Object.keys(maxBorrowableLimits).map(tierName => (
                             <TierMeter
@@ -468,17 +470,17 @@ export const LoanSimulator = ({ address, isConnected }: UserProfileProps) => {
                 </div>
 
                 {/* Current Prices */}
-                <div className="bg-gray-800 rounded-lg p-6">
+                <div className="bg-black/30 backdrop-blur-sm rounded-lg p-6 border border-gray-500/30">
                     <div className="flex justify-between items-center mb-4">
-                        <h4 className="text-xl font-bold">Current Market Prices</h4>
+                        <h4 className="text-xl font-bold drop-shadow-lg">Current Market Prices</h4>
                         <div className="flex items-center gap-3">
                             {priceError && (
-                                <span className="text-yellow-400 text-sm">Using demo prices</span>
+                                <span className="text-yellow-400 text-sm drop-shadow-md">Using demo prices</span>
                             )}
                             <button 
                                 onClick={fetchAllTokenPrices} 
                                 disabled={loading}
-                                className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 text-white px-4 py-2 rounded-lg transition duration-200"
+                                className="bg-blue-600/80 hover:bg-blue-700/80 disabled:bg-gray-600/80 backdrop-blur-sm text-white px-4 py-2 rounded-lg transition duration-200 border border-blue-500/30"
                             >
                                 {loading ? "Updating..." : "Refresh"}
                             </button>
@@ -486,11 +488,11 @@ export const LoanSimulator = ({ address, isConnected }: UserProfileProps) => {
                     </div>
                     <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
                         {Object.entries(tokenPrices).map(([symbol, price]) => (
-                            <div key={symbol} className="bg-gray-700 rounded-lg p-4 text-center">
-                                <div className="text-lg font-bold text-white">{symbol}</div>
-                                <div className="text-blue-400">${price.toLocaleString()}</div>
+                            <div key={symbol} className="bg-black/40 backdrop-blur-sm rounded-lg p-4 text-center border border-gray-600/30">
+                                <div className="text-lg font-bold text-white drop-shadow-lg">{symbol}</div>
+                                <div className="text-blue-400 drop-shadow-md">${price.toLocaleString()}</div>
                                 {priceError && (
-                                    <div className="text-xs text-yellow-400 mt-1">Demo</div>
+                                    <div className="text-xs text-yellow-400 mt-1 drop-shadow-md">Demo</div>
                                 )}
                             </div>
                         ))}

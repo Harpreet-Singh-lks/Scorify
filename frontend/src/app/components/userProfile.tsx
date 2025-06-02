@@ -66,13 +66,13 @@ const ReputationMeter = ({ reputation, size = 200 }: { reputation: number; size?
                 
                 {/* Center content */}
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
-                    <div className={`text-4xl font-bold ${getScoreColor(reputation)}`}>
+                    <div className={`text-4xl font-bold ${getScoreColor(reputation)} drop-shadow-lg`}>
                         {reputation}
                     </div>
-                    <div className="text-gray-400 text-sm mt-1">
+                    <div className="text-gray-200 text-sm mt-1 drop-shadow-md">
                         Reputation Score
                     </div>
-                    <div className="text-gray-500 text-xs">
+                    <div className="text-gray-300 text-xs drop-shadow-md">
                         {Math.round(percentage)}% Complete
                     </div>
                 </div>
@@ -80,7 +80,7 @@ const ReputationMeter = ({ reputation, size = 200 }: { reputation: number; size?
             
             {/* Tier indicators */}
             <div className="mt-4 w-full max-w-xs">
-                <div className="flex justify-between text-xs text-gray-400 mb-2">
+                <div className="flex justify-between text-xs text-gray-300 mb-2 drop-shadow-md">
                     <span>0</span>
                     <span>400</span>
                     <span>600</span>
@@ -88,7 +88,7 @@ const ReputationMeter = ({ reputation, size = 200 }: { reputation: number; size?
                     <span>900</span>
                     <span>1000</span>
                 </div>
-                <div className="relative w-full h-2 bg-gray-600 rounded-full">
+                <div className="relative w-full h-2 bg-gray-600/50 backdrop-blur-sm rounded-full border border-gray-500/30">
                     <div 
                         className={`h-2 rounded-full transition-all duration-1000 ${
                             reputation >= 900 ? 'bg-gradient-to-r from-cyan-400 to-cyan-300' :
@@ -104,12 +104,12 @@ const ReputationMeter = ({ reputation, size = 200 }: { reputation: number; size?
                     {[400, 600, 750, 900].map((threshold) => (
                         <div
                             key={threshold}
-                            className="absolute top-0 w-0.5 h-2 bg-white opacity-60"
+                            className="absolute top-0 w-0.5 h-2 bg-white opacity-80"
                             style={{ left: `${(threshold / 1000) * 100}%` }}
                         ></div>
                     ))}
                 </div>
-                <div className="flex justify-between text-xs mt-1">
+                <div className="flex justify-between text-xs mt-1 drop-shadow-md">
                     <span className="text-orange-400">Bronze</span>
                     <span className="text-blue-400">Silver</span>
                     <span className="text-yellow-400">Gold</span>
@@ -249,31 +249,32 @@ export const UserProfile = ({ address, isConnected }: UserProfileProps) => {
 
     if (!isConnected) {
         return (
-            <div className="bg-gray-800 rounded-lg p-6 text-center">
-                <p className="text-gray-400">Please connect your wallet to view profile</p>
+            <div className="bg-black/20 backdrop-blur-sm rounded-lg p-6 text-center border border-gray-600/30">
+                <p className="text-gray-200 drop-shadow-lg">Please connect your wallet to view profile</p>
             </div>
         );
     }
 
     return (
-        <div className="bg-gray-800 rounded-lg p-6 max-w-md mx-auto">
+        <div className="max-w-md mx-auto space-y-6">
+            {/* Header */}
             <div className="flex items-center mb-6">
                 <img 
                     src={getAvatarUrl(address)} 
                     alt="User Avatar" 
-                    className="w-16 h-16 rounded-full border-2 border-gray-600"
+                    className="w-16 h-16 rounded-full border-2 border-white/20 backdrop-blur-sm shadow-2xl"
                 />
                 <div className="ml-4">
-                    <h2 className="text-2xl font-bold text-white">User Profile</h2>
-                    <p className="text-gray-400 text-sm">Wallet connected</p>
+                    <h2 className="text-2xl font-bold text-white drop-shadow-lg">User Profile</h2>
+                    <p className="text-gray-200 text-sm drop-shadow-md">Wallet connected</p>
                 </div>
             </div>
             
             {/* User Address */}
             <div className="mb-4">
-                <h3 className="text-sm font-medium text-gray-400 mb-2">Wallet Address</h3>
-                <div className="bg-gray-700 rounded-lg p-3">
-                    <p className="text-blue-400 font-mono text-sm break-all">
+                <h3 className="text-sm font-medium text-gray-200 mb-2 drop-shadow-md">Wallet Address</h3>
+                <div className="bg-black/30 backdrop-blur-sm rounded-lg p-3 border border-gray-500/30">
+                    <p className="text-blue-300 font-mono text-sm break-all drop-shadow-md">
                         {address}
                     </p>
                 </div>
@@ -281,23 +282,23 @@ export const UserProfile = ({ address, isConnected }: UserProfileProps) => {
 
             {/* KYC Status */}
             <div className="mb-4">
-                <h3 className="text-sm font-medium text-gray-400 mb-2">KYC Verification</h3>
-                <div className="bg-gray-700 rounded-lg p-3">
+                <h3 className="text-sm font-medium text-gray-200 mb-2 drop-shadow-md">KYC Verification</h3>
+                <div className="bg-black/30 backdrop-blur-sm rounded-lg p-3 border border-gray-500/30">
                     {loading ? (
                         <div className="flex items-center space-x-2">
                             <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-400"></div>
-                            <span className="text-gray-400">Loading...</span>
+                            <span className="text-gray-200 drop-shadow-md">Loading...</span>
                         </div>
                     ) : (
                         <div className="flex items-center justify-between">
                             <div className="flex items-center space-x-2">
                                 {getKycStatusIcon(kycStatus)}
-                                <span className={`font-medium capitalize ${getKycStatusColor(kycStatus)}`}>
+                                <span className={`font-medium capitalize ${getKycStatusColor(kycStatus)} drop-shadow-md`}>
                                     {kycStatus.replace('_', ' ')}
                                 </span>
                             </div>
                             {kycStatus === "not_started" && (
-                                <button className="text-blue-400 text-sm hover:text-blue-300 transition duration-200">
+                                <button className="text-blue-300 text-sm hover:text-blue-200 transition duration-200 drop-shadow-md">
                                     Start KYC
                                 </button>
                             )}
@@ -308,12 +309,12 @@ export const UserProfile = ({ address, isConnected }: UserProfileProps) => {
 
             {/* Reputation Score - Big Meter */}
             <div className="mb-6">
-                <h3 className="text-lg font-medium text-gray-300 mb-4 text-center">Reputation Assessment</h3>
-                <div className="bg-gray-700 rounded-lg p-6">
+                <h3 className="text-lg font-medium text-gray-200 mb-4 text-center drop-shadow-lg">Reputation Assessment</h3>
+                <div className="bg-black/30 backdrop-blur-sm rounded-lg p-6 border border-gray-500/30">
                     {loading ? (
                         <div className="flex flex-col items-center space-y-4">
                             <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-blue-400"></div>
-                            <span className="text-gray-400">Loading reputation data...</span>
+                            <span className="text-gray-200 drop-shadow-md">Loading reputation data...</span>
                         </div>
                     ) : (
                         <div className="flex flex-col items-center">
@@ -322,21 +323,21 @@ export const UserProfile = ({ address, isConnected }: UserProfileProps) => {
                             {/* Additional metrics */}
                             <div className="mt-6 grid grid-cols-3 gap-4 w-full">
                                 <div className="text-center">
-                                    <div className="text-2xl font-bold text-white">{reputation}</div>
-                                    <div className="text-xs text-gray-400">Current Score</div>
+                                    <div className="text-2xl font-bold text-white drop-shadow-lg">{reputation}</div>
+                                    <div className="text-xs text-gray-200 drop-shadow-md">Current Score</div>
                                 </div>
                                 <div className="text-center">
-                                    <div className={`text-2xl font-bold ${getTierColor(tier)}`}>{tier}</div>
-                                    <div className="text-xs text-gray-400">Current Tier</div>
+                                    <div className={`text-2xl font-bold ${getTierColor(tier)} drop-shadow-lg`}>{tier}</div>
+                                    <div className="text-xs text-gray-200 drop-shadow-md">Current Tier</div>
                                 </div>
                                 <div className="text-center">
-                                    <div className="text-2xl font-bold text-white">
+                                    <div className="text-2xl font-bold text-white drop-shadow-lg">
                                         {reputation < 400 ? 400 - reputation :
                                          reputation < 600 ? 600 - reputation :
                                          reputation < 750 ? 750 - reputation :
                                          reputation < 900 ? 900 - reputation : 0}
                                     </div>
-                                    <div className="text-xs text-gray-400">
+                                    <div className="text-xs text-gray-200 drop-shadow-md">
                                         {reputation >= 900 ? "Max Tier!" : "To Next Tier"}
                                     </div>
                                 </div>
@@ -344,7 +345,7 @@ export const UserProfile = ({ address, isConnected }: UserProfileProps) => {
                             
                             {/* Progress message */}
                             <div className="mt-4 text-center">
-                                <div className="text-sm text-gray-300">
+                                <div className="text-sm text-gray-200 drop-shadow-md">
                                     {reputation < 400 ? `${400 - reputation} points needed for Silver tier` :
                                      reputation < 600 ? `${600 - reputation} points needed for Gold tier` :
                                      reputation < 750 ? `${750 - reputation} points needed for Platinum tier` :
@@ -359,20 +360,20 @@ export const UserProfile = ({ address, isConnected }: UserProfileProps) => {
 
             {/* Tier */}
             <div className="mb-4">
-                <h3 className="text-sm font-medium text-gray-400 mb-2">Tier</h3>
-                <div className="bg-gray-700 rounded-lg p-3">
+                <h3 className="text-sm font-medium text-gray-200 mb-2 drop-shadow-md">Tier</h3>
+                <div className="bg-black/30 backdrop-blur-sm rounded-lg p-3 border border-gray-500/30">
                     {loading ? (
                         <div className="flex items-center space-x-2">
                             <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-400"></div>
-                            <span className="text-gray-400">Loading...</span>
+                            <span className="text-gray-200 drop-shadow-md">Loading...</span>
                         </div>
                     ) : (
                         <div className="flex items-center space-x-3">
-                            <div className={`text-2xl font-bold ${getTierColor(tier)}`}>
+                            <div className={`text-2xl font-bold ${getTierColor(tier)} drop-shadow-lg`}>
                                 {tier}
                             </div>
                             <div className="flex-1">
-                                <div className="text-xs text-gray-400">
+                                <div className="text-xs text-gray-200 drop-shadow-md">
                                     Next tier: {reputation < 400 ? "Silver (400)" : 
                                              reputation < 600 ? "Gold (600)" : 
                                              reputation < 750 ? "Platinum (750)" : 
@@ -386,13 +387,13 @@ export const UserProfile = ({ address, isConnected }: UserProfileProps) => {
 
             {/* Additional Stats */}
             <div className="grid grid-cols-2 gap-4">
-                <div className="bg-gray-700 rounded-lg p-3 text-center">
-                    <p className="text-gray-400 text-xs">Loans Taken</p>
-                    <p className="text-white font-bold">0</p>
+                <div className="bg-black/30 backdrop-blur-sm rounded-lg p-3 text-center border border-gray-500/30">
+                    <p className="text-gray-200 text-xs drop-shadow-md">Loans Taken</p>
+                    <p className="text-white font-bold drop-shadow-lg">0</p>
                 </div>
-                <div className="bg-gray-700 rounded-lg p-3 text-center">
-                    <p className="text-gray-400 text-xs">Loans Given</p>
-                    <p className="text-white font-bold">0</p>
+                <div className="bg-black/30 backdrop-blur-sm rounded-lg p-3 text-center border border-gray-500/30">
+                    <p className="text-gray-200 text-xs drop-shadow-md">Loans Given</p>
+                    <p className="text-white font-bold drop-shadow-lg">0</p>
                 </div>
             </div>
         </div>
