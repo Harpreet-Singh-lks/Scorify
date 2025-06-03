@@ -139,7 +139,7 @@ contract Loan is ReentrancyGuard, Ownable {
     }
 
     function _transferLoanTokens(address borrower, uint256 amount) internal {
-        try ILendingToken(lendingToken).mint(borrower, amount) {
+        try ILendingToken(lendingToken).transfer(borrower, amount) {
             // Successfully minted tokens to borrower
         } catch {
             require(

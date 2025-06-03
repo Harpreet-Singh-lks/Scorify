@@ -20,4 +20,3 @@ contract Deployment is Script{
 }
 
 
-BALANCE=$(cast call 0x48946439c930845eaB91585fb1D4521Bc269c50b "balanceOf(address)" 0xD3Bdf899798dcC3E1c1b47f2E3C0b009B5225548 --rpc-url sepolia)
