@@ -28,16 +28,16 @@ export default function Loans() {
             }
 
             // Check Graphite wallet connection
-            if (window.graphite && !isConnected) {
+            if (window.graphite ) {
                 try {
-                    const accounts = await window.graphite.request({
-                        method: 'eth_accounts'
-                    });
-                    
-                    if (accounts.length > 0) {
-                        setAddress(accounts[0]);
-                        setIsConnected(true);
+                    const enabled = await window.graphite.enable();
+                    if (!enabled) {
+                        throw new Error('User denied access to the wallet');
                     }
+                    const address = await window.graphite.getAddress();
+                    console.log('GraphiteWallet Address:', address);
+                        setIsConnected(true);
+                    
                 } catch (error) {
                     console.error("Error checking Graphite wallet connection:", error);
                 }

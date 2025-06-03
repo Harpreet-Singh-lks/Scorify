@@ -6,17 +6,14 @@ import { PageLayout } from "../components/PageLayout";
 import { useState } from "react";
 import { useWallet } from "../components/PageLayout";
 
-interface DashboardProps {
-    address: string;
-    isConnected: boolean;
-}
-
-export default function Dashboard({ address, isConnected }: DashboardProps) {
+export default function Dashboard() {
     const [activeTab, setActiveTab] = useState<'simulator' | 'activity'>('simulator');
-    const { connectWallet } = useWallet();
+    const { address, isConnected, connectWallet } = useWallet();
 
     // If wallet is not connected, show the FirstPage
     if (!isConnected || !address) {
+        console.log("not connected");
+        console.log("isconnected", isConnected, "address", address);
         return <FirstPage onConnectWallet={connectWallet} />;
     }
 

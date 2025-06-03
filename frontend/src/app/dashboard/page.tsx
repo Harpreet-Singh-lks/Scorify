@@ -9,40 +9,23 @@ export default function DashboardPage() {
     const [isConnected, setIsConnected] = useState(false);
 
     // Check for existing wallet connection on mount
-    useEffect(() => {
-        const checkConnection = async () => {
-            // Check MetaMask connection
-            if (window.ethereum) {
-                try {
-                    const accounts = await window.ethereum.request({
-                        method: 'eth_accounts'
-                    });
-                    
-                    if (accounts.length > 0) {
-                        setAddress(accounts[0]);
-                        setIsConnected(true);
+     useEffect(() => {
+            const checkConnection = async () => {
+                if (window.graphite && !isConnected) {
+                    try {
+                        // Check if already connected without requesting permission
+                        const accounts = await window.graphite.request({ method: 'eth_accounts' });
+                        
+                        if (accounts && accounts.length > 0) {
+                            setAddress(accounts[0]);
+                            setIsConnected(true);
+                            console.log('Auto-connected to Graphite Wallet:', accounts[0]);
+                        }
+                    } catch (error) {
+                        console.error("Error checking Graphite Wallet connection:", error);
                     }
-                } catch (error) {
-                    console.error("Error checking MetaMask connection:", error);
                 }
-            }
-
-            // Check Graphite wallet connection
-            if (window.graphite && !isConnected) {
-                try {
-                    const accounts = await window.graphite.request({
-                        method: 'eth_accounts'
-                    });
-                    
-                    if (accounts.length > 0) {
-                        setAddress(accounts[0]);
-                        setIsConnected(true);
-                    }
-                } catch (error) {
-                    console.error("Error checking Graphite wallet connection:", error);
-                }
-            }
-        };
+            };
 
         checkConnection();
     }, [isConnected]);

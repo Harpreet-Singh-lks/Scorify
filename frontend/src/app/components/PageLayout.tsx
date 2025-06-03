@@ -1,5 +1,7 @@
-// filepath: /Users/harpreetsingh/Documents/Solidity/Graphite-hackathon/frontend/src/app/components/PageLayout.tsx
 "use client";
+
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { useRouter } from "next/navigation";
 
 interface PageLayoutProps {
     children: React.ReactNode;
@@ -29,14 +31,11 @@ export const PageLayout = ({ children, className = "" }: PageLayoutProps) => {
     );
 };
 
-// filepath: /Users/harpreetsingh/Documents/Solidity/Graphite-hackathon/frontend/src/app/context/WalletContext.tsx
-
-
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-
 interface WalletContextType {
     address: string;
+    setAddress: (address: string) => void;
     isConnected: boolean;
+    setIsConnected: (connected: boolean) => void;
     connecting: boolean;
     connectWallet: () => Promise<void>;
     disconnectWallet: () => void;
@@ -60,26 +59,34 @@ export const WalletProvider = ({ children }: WalletProviderProps) => {
     const [address, setAddress] = useState("");
     const [isConnected, setIsConnected] = useState(false);
     const [connecting, setConnecting] = useState(false);
+    const router = useRouter();
 
     const connectWallet = async () => {
         setConnecting(true);
         try {
-            if (!window.ethereum) {
-                alert("Please install MetaMask or another Ethereum wallet.");
-                return;
+            if (!window.graphite) {
+                throw new Error('Graphite Wallet extension not found. Please install it first.');
             }
-
-            const accounts = await window.ethereum.request({
-                method: 'eth_requestAccounts'
-            });
+    
+            // Request permission to connect to the wallet
+            const enabled = await window.graphite.enable();
+            if (!enabled) {
+                throw new Error('User denied access to Graphite Wallet');
+            }
+    
+            // Get the wallet address
+            const walletAddress = await window.graphite.getAddress();
+            console.log('Graphite Wallet Address:', walletAddress);
             
-            if (accounts.length > 0) {
-                setAddress(accounts[0]);
-                setIsConnected(true);
-            }
+            setAddress(walletAddress);
+            setIsConnected(true);
+            
+            // Redirect to dashboard after successful connection
+            router.push("/dashboard");
+            
         } catch (error) {
-            console.error("Error connecting wallet:", error);
-            alert("Failed to connect wallet");
+            console.error("Error connecting Graphite Wallet:", error);
+            alert("Failed to connect Graphite Wallet. Please make sure it's installed and try again.");
         } finally {
             setConnecting(false);
         }
@@ -88,53 +95,63 @@ export const WalletProvider = ({ children }: WalletProviderProps) => {
     const disconnectWallet = () => {
         setAddress("");
         setIsConnected(false);
+        // Redirect to home after disconnection
+        router.push("/");
     };
 
     // Check for existing connection on mount
     useEffect(() => {
         const checkConnection = async () => {
-            if (window.ethereum) {
+            if (window.graphite && !isConnected) {
                 try {
-                    const accounts = await window.ethereum.request({
-                        method: 'eth_accounts'
-                    });
+                    // Check if already connected without requesting permission
+                    const accounts = await window.graphite.request({ method: 'eth_accounts' });
                     
-                    if (accounts.length > 0) {
+                    if (accounts && accounts.length > 0) {
                         setAddress(accounts[0]);
                         setIsConnected(true);
+                        console.log('Auto-connected to Graphite Wallet:', accounts[0]);
                     }
                 } catch (error) {
-                    console.error("Error checking wallet connection:", error);
+                    console.error("Error checking Graphite Wallet connection:", error);
                 }
             }
         };
 
         checkConnection();
-    }, []);
+    }, [isConnected]);
 
-    // Listen for account changes
+    // Listen for Graphite Wallet account changes
     useEffect(() => {
-        if (window.ethereum) {
-            const handleAccountsChanged = (accounts: string[]) => {
+        if (window.graphite) {
+            const handleAccountsChanged = async (accounts: string[]) => {
                 if (accounts.length === 0) {
                     disconnectWallet();
                 } else {
                     setAddress(accounts[0]);
                     setIsConnected(true);
+                    console.log('Graphite Wallet account changed:', accounts[0]);
                 }
             };
 
-            window.ethereum.on('accountsChanged', handleAccountsChanged);
-
-            return () => {
-                window.ethereum.removeListener('accountsChanged', handleAccountsChanged);
-            };
+            // Listen for account changes (if Graphite Wallet supports this)
+            if (window.graphite.on) {
+                window.graphite.on('accountsChanged', handleAccountsChanged);
+                
+                return () => {
+                    if (window.graphite.removeListener) {
+                        window.graphite.removeListener('accountsChanged', handleAccountsChanged);
+                    }
+                };
+            }
         }
     }, []);
 
     const value = {
         address,
+        setAddress,
         isConnected,
+        setIsConnected,
         connecting,
         connectWallet,
         disconnectWallet
