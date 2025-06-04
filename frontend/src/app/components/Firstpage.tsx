@@ -174,7 +174,7 @@ export const FirstPage = ({ onConnectWallet }: FirstPageProps) => {
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
                         <div className="text-center">
                             <h1 className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-blue-400 via-purple-500 to-cyan-400 bg-clip-text text-transparent mb-6 drop-shadow-2xl">
-                                Graphite Lending
+                                SCORIFY 
                             </h1>
                             <p className="text-xl md:text-2xl text-gray-100 mb-8 max-w-3xl mx-auto drop-shadow-lg">
                                 The future of decentralized lending powered by reputation scores and real-time analytics
@@ -337,7 +337,7 @@ export const FirstPage = ({ onConnectWallet }: FirstPageProps) => {
                 <footer className="bg-gray-900/80 backdrop-blur-sm border-t border-gray-600/50 py-12">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="text-center">
-                            <h3 className="text-2xl font-bold text-blue-400 mb-4">Graphite Lending</h3>
+                            <h3 className="text-2xl font-bold text-blue-400 mb-4">Scorify</h3>
                             <p className="text-gray-300 mb-6">Decentralized lending powered by reputation</p>
                             <div className="flex justify-center space-x-6 text-gray-300">
                                 <a href="#" className="hover:text-white transition duration-200">Documentation</a>
