@@ -26,7 +26,7 @@ export const Navbar = () => {
         <nav className="relative bg-gray-900/80 backdrop-blur-sm text-white py-4 shadow-md border-b border-gray-700/50 z-50">
             <div className="container mx-auto px-4 flex justify-between items-center">
                 <Link href="/" className="text-2xl font-bold text-blue-400 hover:text-blue-300 transition duration-300">
-                    Graphite Lending
+                    Scorify
                 </Link>
                 <div className="hidden md:flex space-x-6">
                     <Link href="/" className="font-medium hover:text-blue-400 transition duration-300">Home</Link>
